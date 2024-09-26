@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Cursors</title>
+    <link rel="stylesheet" href="https://unpkg.com/mouse-follower@1/dist/mouse-follower.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://unpkg.com/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+        }
+
+        .cursor-target {
+            position: relative;
+            padding: 20px;
+            border: 1px solid #ccc;
+            cursor: none;
+            text-align: center;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        .cursor-target:hover {
+            background-color: #f0f0f0;
+        }
+
+        .icon {
+            font-size: 24px;
+        }
+
+        /*video style control*/
+        .video {
+            width: 150px;
+            height: 100px;
+            display: none;
+        }
+
+        /*for default cursor style control*/
+        .mf-cursor {
+            /* opacity: 0; */
+        }
+
+        .mf-cursor:before {
+            /* opacity: 0; */
+        }
+
+        /*for media box width, height & bg etc style control*/
+        .mf-cursor-media {
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+        }
+
+        /*text cursor style */
+         /* .mf-cursor.-text:before {
+            transform: scale(1.7);
+            opacity: .65;
+            background: lightseagreen;
+            border: 1px solid #ed88f9;
+            padding: 5px;
+        }
+
+        .mf-cursor.-text .mf-cursor-text, .mf-cursor.-icon .mf-cursor-text {
+            opacity: 1;
+            transform: scale(1);
+            font-size: 14px;
+            color: #ff3fcb;
+            line-height: 20px;
+            background: greenyellow;
+            padding: 15px;
+            border-radius: 50%;
+            transform: translate(-17%, -30%);
+        }  */
+
+
+        /*text different color*/
+        /*
+        .cursor-target {
+            position: relative;
+            padding: 20px;
+            border: 1px solid #ccc;
+            cursor: none;
+            text-align: center;
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .cursor-target:hover {
+            color: #000;
+        }
+
+        .mf-cursor {
+            mix-blend-mode: difference;
+            color: white;
+        }
+
+        .mf-cursor.-text .mf-cursor-text {
+            color: white;
+            font-size: 14px;
+            line-height: 20px;
+            background: transparent;
+        } */
+    </style>
+</head>
+
+<body>
+    <!-- Elements with different cursor styles -->
+     <div class="container">
+        <div class="cursor-target" data-cursor-text="Text Cursor">Text</div>
+        <p class="cursor-target" data-cursor-text="Hello Bangladesh">
+            Hello Bangladesh
+        </p>
+        <div class="cursor-target" data-cursor-img="http://localhost/custom-cursors/assets/img/example.png">Image</div>
+        <div class="cursor-target" data-cursor-icon="bi bi-alarm-fill">&#9733;</div>
+        <div class="cursor-target" data-cursor-icon="alarm-svg">Custom SVG Icon</div>
+        <!-- <div class="cursor-target" data-cursor-icon="http://localhost/custom-cursors/assets/img/alarm.svg">&#9733;</div> -->
+        <div class="cursor-target video-cursor"
+            data-cursor-video="http://localhost/custom-cursors/assets/video/mov_bbb.mp4">Video</div>
+
+        <!-- Hidden video for the video cursor -->
+        <video id="myVideo" class="video" autoplay loop muted>
+            <source src="http://localhost/custom-cursors/assets/video/mov_bbb.mp4">
+        </video>
+    </div>
+ 
+
+    <script>
+        // Initialize mouse follower cursor
+        const cursor = new MouseFollower({
+            el: null,
+            container: document.body,
+            className: 'mf-cursor',
+            textColor: '#000',
+            opacity: 0.8,
+            visible: true,
+            hideOnLeave: true,
+            stickDelta: 0.2
+        });
+
+        // Apply different cursor styles on hover
+        document.querySelectorAll('.cursor-target').forEach(item => {
+
+            item.addEventListener('mouseenter', function () {
+
+                const text = this.getAttribute('data-cursor-text');
+                const img = this.getAttribute('data-cursor-img');
+                const icon = this.getAttribute('data-cursor-icon');
+                const video = this.getAttribute('data-cursor-video');
+
+                let iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-alarm-fill" viewBox="0 0 16 16">
+                                <path d="M6 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H9v1.07a7.001 7.001 0 0 1 3.274 12.474l.601.602a.5.5 0 0 1-.707.708l-.746-.746A6.97 6.97 0 0 1 8 16a6.97 6.97 0 0 1-3.422-.892l-.746.746a.5.5 0 0 1-.707-.708l.602-.602A7.001 7.001 0 0 1 7 2.07V1h-.5A.5.5 0 0 1 6 .5m2.5 5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9zM.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.04 8.04 0 0 0 .86 5.387M11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.04 8.04 0 0 0-3.527-3.527"/>
+                                </svg>`;
+                let iconFa = `<i class='fab fa-affiliatetheme'></i>`;
+
+                // Set text cursor
+                if (text) {
+                    // cursor.setText(text);
+                    cursor.setText('');
+                }
+
+                // Set image cursor
+                if (img) {
+                    cursor.setImg(img);
+                }
+
+                // Set icon cursor
+                if (icon) {
+                    // cursor.setImg(icon);
+                    cursor.setText(iconSvg);
+                    // cursor.setText(iconFa);
+                }
+
+                // Set video cursor
+                if (video) {
+                    const videoEl = document.getElementById(video);
+                    cursor.setMedia(videoEl);
+                }
+            });
+
+            // Reset cursor on mouseleave
+            item.addEventListener('mouseleave', function () {
+                cursor.removeText();
+                cursor.removeImg();
+                cursor.removeMedia();
+            });
+        });
+    </script>
+</body>
+
+</html>

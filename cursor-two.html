@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/mouse-follower@1/dist/mouse-follower.min.css">
+
+    <script src="https://unpkg.com/mouse-follower@1/dist/mouse-follower.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="main-container" style="padding: 30px;">
+
+        <div class="my-image" style="margin-bottom: 30px;">On this element cursor will be in opaque state</div>
+        <div class="my-input">On this element cursor will be hidden</div>
+        
+        <div style="margin-top: 30px;">
+            <a href="https://www.google.com/" target="_blank" class="my-element">On this element cursor will be in pointer state</a>
+        </div>
+    
+        <div style="margin-top: 30px;">
+            <a href="https://www.prothomalo.com/" target="_blank" class="my-element-img">On this element cursor will be in pointer state Img</a>
+        </div>
+
+        <!-- <div class="my-icon-element" style="margin-top: 30px;" data-cursor-icon="http://localhost/custom-cursors/assets/img/alarm.svg">Hover me, i am icon!</div> -->
+
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            /*
+            const cursor = new MouseFollower({
+                el: null,
+                container: document.body,
+                className: 'mf-cursor',
+                innerClassName: 'mf-cursor-inner',
+                textClassName: 'mf-cursor-text',
+                mediaClassName: 'mf-cursor-media',
+                mediaBoxClassName: 'mf-cursor-media-box',
+                iconSvgClassName: 'mf-svgsprite',
+                iconSvgNamePrefix: '-',
+                iconSvgSrc: '',
+                dataAttr: 'cursor',
+                hiddenState: '-hidden',
+                textState: '-text',
+                iconState: '-icon',
+                activeState: '-active',
+                mediaState: '-media',
+                stateDetection: {
+                    '-pointer': 'a,button',
+                    '-hidden': 'iframe'
+                },
+                visible: true,
+                visibleOnState: false,
+                speed: 0.55,
+                ease: 'expo.out',
+                overwrite: true,
+                skewing: 0,
+                skewingText: 2,
+                skewingIcon: 2,
+                skewingMedia: 2,
+                skewingDelta: 0.001,
+                skewingDeltaMax: 0.15,
+                stickDelta: 0.15,
+                showTimeout: 20,
+                hideOnLeave: true,
+                hideTimeout: 300,
+                hideMediaTimeout: 300
+            }); */
+
+
+            const cursor = new MouseFollower();
+            // text mode
+           
+            const el = document.querySelector('.my-element');
+
+            el.addEventListener('mouseenter', () => {
+                cursor.setText('Hello!');
+            });
+
+            el.addEventListener('mouseleave', () => {
+                cursor.removeText();
+            });
+
+            //image 
+            const elImg = document.querySelector('.my-element-img');
+            //Image
+            // elImg.addEventListener('mouseenter', () => {
+            //     cursor.setImg('http://localhost/custom-cursors/assets/img/example.png')
+            // });
+
+            elImg.addEventListener('mouseenter', () => {
+                cursor.setImg('http://localhost/custom-cursors/assets/img/alarm.svg')
+            });
+
+            elImg.addEventListener('mouseleave', () => {
+                cursor.removeImg()
+            });
+
+        });
+    </script>
+</body>
+
+</html>
